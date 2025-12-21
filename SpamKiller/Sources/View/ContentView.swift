@@ -35,18 +35,6 @@ struct ContentView: View {
                         // Text("스팸 분류 단어")
                         // Text("이 단어가 포함된 문자를 걸러요")
                     }
-                    
-                    
-                    Section {
-                        ForEach(viewModel.keywords, id: \.self) { keyword in
-                            Text(keyword)
-                        }
-                        .onDelete(perform: viewModel.deleteKeyword)
-                    } header: {
-                        Text("스팸 분류 단어 · 정크함으로 이동")
-                        // Text("스팸 분류 단어")
-                        // Text("이 단어가 포함된 문자를 걸러요")
-                    }
                 }
             }
             .navigationTitle("스팸 킬러")
@@ -59,7 +47,16 @@ struct ContentView: View {
                         Image(systemName: "plus")
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        viewModel.showSettings = true
+                    } label: {
+                        Text("설정")
+                        // Image(systemName: "gearshape.fill")
+                    }
+                }
             }
+            // 키워드 추가 알림
             .alert("키워드 추가", isPresented: $viewModel.showAddAlert) {
                 TextField("예: 대출, 광고", text: $viewModel.newKeyword)
 
@@ -70,6 +67,10 @@ struct ContentView: View {
                 Button("취소", role: .cancel) {
                     viewModel.newKeyword = ""
                 }
+            }
+            // 상태 기반 네비게이션
+            .navigationDestination(isPresented: $viewModel.showSettings) {
+                SettingView()
             }
         }
     }

@@ -13,6 +13,7 @@ final class ContentViewModel: ObservableObject {
     @Published var keywords: [String] = []
     @Published var newKeyword: String = ""
     @Published var showAddAlert: Bool = false
+    @Published var showSettings: Bool = false
 
     // MARK: - Dependencies
     private let store: SpamKeywordStore
