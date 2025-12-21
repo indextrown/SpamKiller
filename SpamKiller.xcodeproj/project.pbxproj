@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DF4198D02EF8821C00469A19 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8392662EF84E5800258BF4 /* AppGroup.swift */; };
 		DF83925D2EF8407B00258BF4 /* SpamKillerMessageFilter.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DF8392562EF8407B00258BF4 /* SpamKillerMessageFilter.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DF8392672EF84E5800258BF4 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8392662EF84E5800258BF4 /* AppGroup.swift */; };
 		DF83926A2EF84ED300258BF4 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8392662EF84E5800258BF4 /* AppGroup.swift */; };
@@ -37,12 +38,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DF4198BC2EF87CB000469A19 /* SpamKillerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpamKillerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8392442EF8404000258BF4 /* SpamKiller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpamKiller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8392562EF8407B00258BF4 /* SpamKillerMessageFilter.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SpamKillerMessageFilter.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8392662EF84E5800258BF4 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DF4198CE2EF8816600469A19 /* Exceptions for "SpamKillerMessageFilter" folder in "SpamKillerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MessageFilterExtension.swift,
+			);
+			target = DF4198BB2EF87CB000469A19 /* SpamKillerTests */;
+		};
 		DF83925E2EF8407B00258BF4 /* Exceptions for "SpamKillerMessageFilter" folder in "SpamKillerMessageFilter" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -53,6 +62,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		DF4198BD2EF87CB000469A19 /* SpamKillerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SpamKillerTests;
+			sourceTree = "<group>";
+		};
 		DF8392462EF8404000258BF4 /* SpamKiller */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SpamKiller;
@@ -62,6 +76,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				DF83925E2EF8407B00258BF4 /* Exceptions for "SpamKillerMessageFilter" folder in "SpamKillerMessageFilter" target */,
+				DF4198CE2EF8816600469A19 /* Exceptions for "SpamKillerMessageFilter" folder in "SpamKillerTests" target */,
 			);
 			path = SpamKillerMessageFilter;
 			sourceTree = "<group>";
@@ -69,6 +84,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		DF4198B92EF87CB000469A19 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DF8392412EF8404000258BF4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -92,6 +114,7 @@
 				DF8392652EF84E4800258BF4 /* Shared */,
 				DF8392462EF8404000258BF4 /* SpamKiller */,
 				DF8392572EF8407B00258BF4 /* SpamKillerMessageFilter */,
+				DF4198BD2EF87CB000469A19 /* SpamKillerTests */,
 				DF8392452EF8404000258BF4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +124,7 @@
 			children = (
 				DF8392442EF8404000258BF4 /* SpamKiller.app */,
 				DF8392562EF8407B00258BF4 /* SpamKillerMessageFilter.appex */,
+				DF4198BC2EF87CB000469A19 /* SpamKillerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +140,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		DF4198BB2EF87CB000469A19 /* SpamKillerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DF4198C22EF87CB000469A19 /* Build configuration list for PBXNativeTarget "SpamKillerTests" */;
+			buildPhases = (
+				DF4198B82EF87CB000469A19 /* Sources */,
+				DF4198B92EF87CB000469A19 /* Frameworks */,
+				DF4198BA2EF87CB000469A19 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DF4198BD2EF87CB000469A19 /* SpamKillerTests */,
+			);
+			name = SpamKillerTests;
+			packageProductDependencies = (
+			);
+			productName = SpamKillerTests;
+			productReference = DF4198BC2EF87CB000469A19 /* SpamKillerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		DF8392432EF8404000258BF4 /* SpamKiller */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DF83924F2EF8404100258BF4 /* Build configuration list for PBXNativeTarget "SpamKiller" */;
@@ -172,6 +218,9 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					DF4198BB2EF87CB000469A19 = {
+						CreatedOnToolsVersion = 16.4;
+					};
 					DF8392432EF8404000258BF4 = {
 						CreatedOnToolsVersion = 16.4;
 					};
@@ -196,11 +245,19 @@
 			targets = (
 				DF8392432EF8404000258BF4 /* SpamKiller */,
 				DF8392552EF8407B00258BF4 /* SpamKillerMessageFilter */,
+				DF4198BB2EF87CB000469A19 /* SpamKillerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		DF4198BA2EF87CB000469A19 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DF8392422EF8404000258BF4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -218,6 +275,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		DF4198B82EF87CB000469A19 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF4198D02EF8821C00469A19 /* AppGroup.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DF8392402EF8404000258BF4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -245,6 +310,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		DF4198C02EF87CB000469A19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LGX4B4WC66;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.SpamKillerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DF4198C12EF87CB000469A19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LGX4B4WC66;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.indextrown.SpamKillerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		DF83924D2EF8404100258BF4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -499,6 +596,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DF4198C22EF87CB000469A19 /* Build configuration list for PBXNativeTarget "SpamKillerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF4198C02EF87CB000469A19 /* Debug */,
+				DF4198C12EF87CB000469A19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		DF83923F2EF8404000258BF4 /* Build configuration list for PBXProject "SpamKiller" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

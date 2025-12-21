@@ -195,5 +195,24 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
         // 네트워크 응답 파싱 로직 구현
         return (.none, .none)
     }
+}
 
+extension MessageFilterExtension {
+    
+    /// 문자 메시지(message)에 스팸 키워드(keywords)가 하나라도 포함돼 있으면 .junk, 아니면 .allow를 반환한다
+    /// - Parameters:
+    ///   - message: 메시지
+    ///   - keywords: 스팸 키워드
+    /// - Returns: true면 스팸으로 정크함 / false면 정상 문자
+    /// .allow
+    /// .junk
+    /// .promotion
+    /// .transaction
+    /// .none
+    func classifyMessage(message: String,
+                         keywords: [String]
+    ) -> ILMessageFilterAction {
+        let isSpam = keywords.contains { message.contains($0) }
+        return isSpam ? .junk : .allow
+    }
 }
