@@ -179,11 +179,27 @@ extension MessageFilterExtension {
     
     func checkByML(message: String) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
         
-        // 모델이 없으면 ML 판단은 하지 않음
-        guard let model else {
+        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // 정책 1: 빈 문자열
+        if trimmed.isEmpty {
+            return (.none, .none)
+        }
+
+        // 정책 2: 너무 짧은 메시지
+        if trimmed.count <= 1 {
+            return (.none, .none)
+        }
+
+        // 정책 3: 숫자만 있는 메시지
+        if trimmed.allSatisfy({ $0.isNumber }) {
             return (.none, .none)
         }
         
+        // 모델이 없으면 ML 판단은 하지 않음
+        guard let model else { return (.none, .none) }
+        
+        // ML 실행
         do {
             let output = try model.prediction(text: message)
             let label = output.label   // "spam" or "ham"
