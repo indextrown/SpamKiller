@@ -10,7 +10,7 @@ import CoreML
 
 /// Message Filter Extension의 진입점 클래스.
 /// 실제 메시지 필터링 로직은 프로토콜 구현(extension)에서 수행된다.
-final class MessageFilterExtension: ILMessageFilterExtension {
+final class MessageFilterExtensionSave: ILMessageFilterExtension {
     // 🔹 Core ML 모델을 lazy 로딩
     // Extension은 메모리/시간 제한이 빡세기 때문에
     // 처음 호출될 때만 모델을 메모리에 올리는 게 중요
@@ -22,7 +22,10 @@ final class MessageFilterExtension: ILMessageFilterExtension {
     
 }
 
-extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterCapabilitiesQueryHandling {
+extension MessageFilterExtensionSave: ILMessageFilterQueryHandling, ILMessageFilterCapabilitiesQueryHandling {
+    
+   
+
     
     /// 메시지 필터 확장이 어떤 기능을 지원하는지 iOS에 알려주는 메서드
     ///
@@ -43,6 +46,12 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     ///   - completion: 지원 기능 정보를 담아 응답해야 하는 클로저
     func handle(_ capabilitiesQueryRequest: ILMessageFilterCapabilitiesQueryRequest, context: ILMessageFilterExtensionContext, completion: @escaping (ILMessageFilterCapabilitiesQueryResponse) -> Void) {
         let response = ILMessageFilterCapabilitiesQueryResponse()
+        // TODO:
+        // 필요한 경우 아래 subActions를 설정하여
+        // promotional / transactional 메시지를 세부 분류할 수 있음
+        //
+        // response.transactionalSubActions = [...]
+        // response.promotionalSubActions   = [...]
 
         completion(response)
     }
@@ -126,6 +135,11 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     ///   - ILMessageFilterAction: 메시지 분류 결과
     ///   - ILMessageFilterSubAction: 세부 분류 (필요 없으면 .none)
     private func offlineAction(for queryRequest: ILMessageFilterQueryRequest) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
+        // TODO: Replace with logic to perform offline check whether to filter first (if possible).
+        // TODO:
+        // SpamKiller의 핵심 로직을 여기에 구현
+        
+        
         let message = queryRequest.messageBody ?? ""
         
         // App Group 열기(공용 저장소)
@@ -134,7 +148,41 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
         // 메인 앱이 저장한 키워드 읽기
         let spamKeywords = defaults?.stringArray(forKey: AppGroup.spamKeywordKey) ?? []
         
-        return checkByKeyword(message: message, keywords: spamKeywords)
+        let isSpam = spamKeywords.contains { message.contains($0) }
+        
+        return isSpam ? (.junk, .none) : (.allow, .none)
+        
+        /*
+         [기존 방식]
+        // 메시지 본문
+        let message = queryRequest.messageBody ?? ""
+        
+        // SpamKiller 1차 스팸 키워드
+        let spamKeywords = [
+            "대출",
+            "광고",
+            "무료",
+            "당첨",
+        ]
+        
+        // 키워드가 하나라도 포함되면 스팸으로 판단
+        let spam: Bool = spamKeywords.contains { message.contains($0) }
+        
+        if spam {
+            // 정크함으로 이동
+            // 서브분류는 지금은 안씀
+            /**
+             .allow            // 정상 메시지
+             .junk              // 스팸 (정크함)
+             .promotion    // 광고
+             .transaction  // 거래/금융
+             */
+            return (.junk, .none)
+        } else {
+            // 정상 문자
+            return (.allow, .none)
+        }
+         */
     }
 
     /// 네트워크 응답을 파싱하여 메시지 분류 결과를 결정하는 메서드
@@ -159,8 +207,13 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     }
 }
 
-// MARK: - Logic & Unit Test
-extension MessageFilterExtension {
+// MARK: - Logic Func
+extension MessageFilterExtensionSave {
+    
+}
+
+// MARK: - Unit Test
+extension MessageFilterExtensionSave {
     
     /// 문자 메시지(message)에 스팸 키워드(keywords)가 하나라도 포함돼 있으면 .junk, 아니면 .allow를 반환한다
     /// - Parameters:
@@ -172,32 +225,39 @@ extension MessageFilterExtension {
     /// .promotion
     /// .transaction
     /// .none
-    func checkByKeyword(message: String, keywords: [String]) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
+    func checkByKeyword(message: String,
+                         keywords: [String]
+    ) -> ILMessageFilterAction {
         let isSpam = keywords.contains { message.contains($0) }
-        return isSpam ? (.junk, .none) : (.allow, .none)
+        return isSpam ? .junk : .allow
     }
     
-    func checkByML(message: String) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
-        
-        // 모델이 없으면 ML 판단은 하지 않음
-        guard let model else {
-            return (.none, .none)
-        }
-        
+    
+    private func checkByML(message: String,
+                           threshold: Double = 0.7
+    ) -> ILMessageFilterAction? {
+
+        // Core ML 모델이 로드되지 않았으면 판단 보류
+        guard let model else { return nil }
+
         do {
+            // Core ML 텍스트 분류 실행
             let output = try model.prediction(text: message)
-            let label = output.label   // "spam" or "ham"
-            
+
+            // 모델이 선택한 최종 라벨 ("spam" or "ham")
+            let label = output.label
+
+         
+            // spam + 충분한 신뢰도일 때만 차단(junk)
             if label == "spam" {
-                // ML이 spam이라고 확신
-                return (.junk, .none)
+                return .junk
             } else {
-                // ham이면 판단 보류
-                return (.none, .none)
+                // 애매하면 판단 보류
+                return nil
             }
         } catch {
-            // 에러 시에도 판단 보류
-            return (.none, .none)
+            // 추론 실패 시 안전하게 판단 보류
+            return nil
         }
     }
 }
