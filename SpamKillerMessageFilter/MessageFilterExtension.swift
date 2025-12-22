@@ -128,6 +128,12 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     private func offlineAction(for queryRequest: ILMessageFilterQueryRequest) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
         let message = queryRequest.messageBody ?? ""
         
+        // MARK: - 공통 정책
+        if let policyResult = applyPolicy(message: message) {
+            return policyResult
+        }
+        
+        // MARK: - 키워드 기반 판단
         // App Group 열기(공용 저장소)
         let defaults = UserDefaults(suiteName: AppGroup.id)
         
@@ -162,6 +168,29 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
 // MARK: - Logic & Unit Test
 extension MessageFilterExtension {
     
+    func applyPolicy(message: String) -> (ILMessageFilterAction, ILMessageFilterSubAction)? {
+
+        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // 정책 1: 빈 문자열
+        if trimmed.isEmpty {
+            return (.none, .none)
+        }
+
+        // 정책 2: 너무 짧은 메시지
+        if trimmed.count <= 1 {
+            return (.none, .none)
+        }
+
+        // 정책 3: 숫자만 있는 메시지
+        if trimmed.allSatisfy({ $0.isNumber }) {
+            return (.none, .none)
+        }
+
+        // 정책에 걸리지 않으면 판단 계속
+        return nil
+    }
+    
     /// 문자 메시지(message)에 스팸 키워드(keywords)가 하나라도 포함돼 있으면 .junk, 아니면 .allow를 반환한다
     /// - Parameters:
     ///   - message: 메시지
@@ -178,24 +207,6 @@ extension MessageFilterExtension {
     }
     
     func checkByML(message: String) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
-        
-        let trimmed = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // 정책 1: 빈 문자열
-        if trimmed.isEmpty {
-            return (.none, .none)
-        }
-
-        // 정책 2: 너무 짧은 메시지
-        if trimmed.count <= 1 {
-            return (.none, .none)
-        }
-
-        // 정책 3: 숫자만 있는 메시지
-        if trimmed.allSatisfy({ $0.isNumber }) {
-            return (.none, .none)
-        }
-        
         // 모델이 없으면 ML 판단은 하지 않음
         guard let model else { return (.none, .none) }
         

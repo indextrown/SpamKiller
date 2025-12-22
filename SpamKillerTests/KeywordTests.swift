@@ -9,7 +9,7 @@ import Testing
 import SpamKillerMessageFilter
 // API가 internal이 아니라 public 범위라 @testable 필요 없다
 
-struct SpamKillerKeywordTests {
+struct KeywordTests {
 
     let ext = MessageFilterExtension()
 
