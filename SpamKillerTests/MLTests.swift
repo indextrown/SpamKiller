@@ -52,4 +52,39 @@ struct MLTests {
         #expect(result.0 == .none)
         #expect(result.1 == .none)
     }
+    
+    @Test("ML은 여러 스팸 메시지를 junk로 분류한다")
+    func ml_multiple_spam_messages_return_junk() {
+        let spamMessages = [
+            "무료 대출 지금 가능",
+            "지금 신청하세요",
+            "100% 당첨 이벤트",
+            "지금 바로 상담 가능",
+            "수수료 없이 대출 승인"
+        ]
+
+        for msg in spamMessages {
+            let result = ext.checkByML(message: msg)
+
+            #expect(result.0 == .junk, "실패 메시지: \(msg)")
+            #expect(result.1 == .none)
+        }
+    }
+
+    @Test("ML은 여러 정상 메시지를 none으로 분류한다")
+    func ml_multiple_normal_messages_return_none() {
+        let normalMessages = [
+            "오늘 저녁 뭐 먹을까",
+            "내일 몇 시에 만날까?",
+            "회의 자료 메일로 보냈어",
+            "집에 도착하면 연락 줘",
+        ]
+
+        for msg in normalMessages {
+            let result = ext.checkByML(message: msg)
+
+            #expect(result.0 == .none, "실패 메시지: \(msg)")
+            #expect(result.1 == .none)
+        }
+    }
 }

@@ -112,3 +112,9 @@ private extension MainView {
         .preferredColorScheme(.dark)
         .environmentObject(ContentViewModel())
 }
+
+#Preview {
+    SettingView()
+        .preferredColorScheme(.dark)
+        .environmentObject(ContentViewModel())
+}

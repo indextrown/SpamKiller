@@ -3,8 +3,8 @@
     "com.apple.createml.app.tag" : "151.2",
     "com.apple.createml.training.finished" : "2025-12-22T05:24:29Z",
     "com.apple.createml.model.created" : "2025-12-22T05:24:29Z",
-    "com.apple.coreml.model.preview.type" : "textClassifier",
     "com.apple.createml.app.version" : "6.2",
+    "com.apple.coreml.model.preview.type" : "textClassifier",
     "com.apple.createml.training.started" : "2025-12-22T05:24:29Z"
   },
   "MLModelAuthorKey" : "김동현"
