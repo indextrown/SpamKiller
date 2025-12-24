@@ -19,7 +19,6 @@ final class MessageFilterExtension: ILMessageFilterExtension {
         // .mlmodel 파일이 있으면 자동 생성된 클래스
         // 실패해도 앱 크래시 안 나게 try? 사용
     }()
-    
 }
 
 extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterCapabilitiesQueryHandling {
@@ -128,19 +127,30 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     private func offlineAction(for queryRequest: ILMessageFilterQueryRequest) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
         let message = queryRequest.messageBody ?? ""
         
-        // MARK: - 공통 정책
+        // MARK: - 1. 공통 정책
         if let policyResult = applyPolicy(message: message) {
             return policyResult
         }
         
-        // MARK: - 키워드 기반 판단
-        // App Group 열기(공용 저장소)
-        let defaults = UserDefaults(suiteName: AppGroup.id)
-        
+        // MARK: - 2. 키워드 기반 판단
         // 메인 앱이 저장한 키워드 읽기
-        let spamKeywords = defaults?.stringArray(forKey: AppGroup.spamKeywordKey) ?? []
+        let spamKeywords = SharedStore.shared.loadSpamKeywords()
+        let keywordResult = checkByKeyword(message: message, keywords: spamKeywords)
         
-        return checkByKeyword(message: message, keywords: spamKeywords)
+        // 키워드 판단 결과가 스팸이면 즉시 종료
+        if keywordResult.0 == .junk {
+            return keywordResult
+        }
+        
+        // MARK: - 3. 온디바이스 ML(토글이 ON일 때만 동작)
+        if SharedStore.shared.isOnDeviceEnabled() {
+            let mlResult = checkByML(message: message)
+            if mlResult.0 != .none {
+                return mlResult
+            }
+        }
+        
+        return (.none, .none)
     }
 
     /// 네트워크 응답을 파싱하여 메시지 분류 결과를 결정하는 메서드

@@ -13,33 +13,44 @@ final class ContentViewModel: ObservableObject {
     @Published var keywords: [String] = []
     @Published var newKeyword: String = ""
     @Published var showAddAlert: Bool = false
-    @Published var showSettings: Bool = false
-
-    // MARK: - Dependencies
-    private let store: SpamKeywordStore
+    @Published var showHelpView: Bool = false
+    @Published var isOnDeviceEnabled: Bool = false
 
     // MARK: - Init
-    init(store: SpamKeywordStore = SpamKeywordStore()) {
-        self.store = store
+    init() {
         loadKeywords()
+        loadOnDeviceToggle()
     }
+}
 
-    // MARK: - Intent (User Actions)
+// MARK: - Keyword
+extension ContentViewModel {
+    
     func loadKeywords() {
-        keywords = store.load()
+        keywords = SharedStore.shared.loadSpamKeywords()
     }
 
     func addKeyword() {
-        let trimmed = newKeyword.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-
-        store.add(trimmed)
-        keywords = store.load()
+        SharedStore.shared.addSpamKeyword(keyword: newKeyword)
+        keywords = SharedStore.shared.loadSpamKeywords()
         newKeyword = ""
     }
-
+    
     func deleteKeyword(at offsets: IndexSet) {
-        store.remove(at: offsets)
-        keywords = store.load()
+        SharedStore.shared.removeSpamKeywords(at: offsets)
+        keywords = SharedStore.shared.loadSpamKeywords()
+    }
+}
+
+// MARK: - On-Device AI
+extension ContentViewModel {
+    
+    func loadOnDeviceToggle() {
+        isOnDeviceEnabled = SharedStore.shared.isOnDeviceEnabled()
+    }
+
+    func setOnDeviceEnabled(_ enabled: Bool) {
+        isOnDeviceEnabled = enabled
+        SharedStore.shared.setOnDeviceEnabled(enabled)
     }
 }

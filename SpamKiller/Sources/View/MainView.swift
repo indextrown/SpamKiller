@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  SpamKiller
 //
 //  Created by 김동현 on 12/21/25.
@@ -15,9 +15,8 @@
 
 import SwiftUI
 
-struct ContentView: View {
-
-    @StateObject private var viewModel = ContentViewModel()
+struct MainView: View {
+    @EnvironmentObject var viewModel: ContentViewModel
 
     var body: some View {
         NavigationStack {
@@ -32,8 +31,7 @@ struct ContentView: View {
                         .onDelete(perform: viewModel.deleteKeyword)
                     } header: {
                         Text("스팸 분류 단어 · 정크함으로 이동")
-                        // Text("스팸 분류 단어")
-                        // Text("이 단어가 포함된 문자를 걸러요")
+                            .font(.system(size: 14))
                     }
                 }
             }
@@ -42,16 +40,9 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        viewModel.showAddAlert = true
+                        viewModel.showHelpView = true
                     } label: {
-                        Image(systemName: "plus")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.showSettings = true
-                    } label: {
-                        Text("설정")
+                        Text("도움말")
                         // Image(systemName: "gearshape.fill")
                     }
                 }
@@ -69,14 +60,29 @@ struct ContentView: View {
                 }
             }
             // 상태 기반 네비게이션
-            .navigationDestination(isPresented: $viewModel.showSettings) {
-                SettingView()
+            .navigationDestination(isPresented: $viewModel.showHelpView) {
+                HelpView()
             }
+        } // NavigationStack
+        .overlay(alignment: .bottomTrailing) {
+            Button {
+                viewModel.showAddAlert = true
+            } label: {
+                Image(systemName: "plus")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 56, height: 56)
+                    .background(Color(.systemGray3))
+                    .clipShape(Circle())
+                    .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 3)
+            }
+            
+            .padding()
         }
     }
 }
 
-private extension ContentView {
+private extension MainView {
 
     var emptyStateView: some View {
         VStack(spacing: 12) {
@@ -97,7 +103,12 @@ private extension ContentView {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    MainView()
+//}
 
+#Preview {
+    TabBarView()
+        .preferredColorScheme(.dark)
+        .environmentObject(ContentViewModel())
+}
