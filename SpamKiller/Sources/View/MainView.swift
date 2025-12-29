@@ -43,7 +43,6 @@ struct MainView: View {
                         viewModel.showHelpView = true
                     } label: {
                         Text("도움말")
-                        // Image(systemName: "gearshape.fill")
                     }
                 }
             }
@@ -59,8 +58,7 @@ struct MainView: View {
                     viewModel.newKeyword = ""
                 }
             }
-            // 상태 기반 네비게이션
-            .navigationDestination(isPresented: $viewModel.showHelpView) {
+            .fullScreenCover(isPresented: $viewModel.showHelpView) {
                 HelpView()
             }
         } // NavigationStack
