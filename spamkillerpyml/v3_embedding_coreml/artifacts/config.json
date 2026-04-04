@@ -1,0 +1,14 @@
+{
+  "model_type": "embedding_plus_logistic_regression_coreml_classifier",
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "embedding_dimension": 384,
+  "negative_label": "ham",
+  "positive_label": "spam",
+  "classifier_artifact": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/v3_embedding_coreml/artifacts/classifier.joblib",
+  "mlmodel_artifact": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/v3_embedding_coreml/artifacts/SpamKillerEmbeddingClassifier.mlmodel",
+  "notes": [
+    "이 버전은 실제 Core ML .mlmodel 파일을 생성합니다.",
+    "다만 .mlmodel 입력은 원문 문자열이 아니라 임베딩 벡터입니다.",
+    "실제 앱 배포에서는 같은 임베딩 모델로 먼저 벡터를 만든 뒤 이 mlmodel에 넣어야 합니다."
+  ]
+}

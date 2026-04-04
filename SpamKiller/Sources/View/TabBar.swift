@@ -29,7 +29,21 @@ struct TabBarView: View {
                 .tag(2)
         }
         .font(.headline)
+        .liquidGlassTabBarIfAvailable()
         .environmentObject(viewModel)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func liquidGlassTabBarIfAvailable() -> some View {
+        if #available(iOS 26, *) {
+            self
+                .toolbarBackground(.visible, for: .tabBar)
+                .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+        } else {
+            self
+        }
     }
 }
 

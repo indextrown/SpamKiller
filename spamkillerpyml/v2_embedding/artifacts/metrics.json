@@ -1,0 +1,22 @@
+{
+  "train": {
+    "accuracy": 0.9146,
+    "samples": 164,
+    "ham_precision": 0.8938,
+    "ham_recall": 0.9806,
+    "spam_precision": 0.9608,
+    "spam_recall": 0.8033
+  },
+  "test": {
+    "accuracy": 0.9524,
+    "samples": 42,
+    "ham_precision": 0.9565,
+    "ham_recall": 0.9565,
+    "spam_precision": 0.9474,
+    "spam_recall": 0.9474
+  },
+  "label_distribution": {
+    "spam": 80,
+    "ham": 126
+  }
+}

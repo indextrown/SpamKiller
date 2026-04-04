@@ -1,0 +1,46 @@
+{
+  "dataset": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/data/test.csv",
+  "samples": 32,
+  "label_distribution": {
+    "spam": 12,
+    "ham": 20
+  },
+  "results": [
+    {
+      "model_name": "v0_default",
+      "status": "ok",
+      "accuracy": 0.625,
+      "samples": 32,
+      "avg_latency_ms": 0.114,
+      "p95_latency_ms": 0.08,
+      "details": ""
+    },
+    {
+      "model_name": "v1_sparse_linear",
+      "status": "ok",
+      "accuracy": 0.9375,
+      "samples": 32,
+      "avg_latency_ms": 0.054,
+      "p95_latency_ms": 0.065,
+      "details": ""
+    },
+    {
+      "model_name": "v3_embedding_coreml",
+      "status": "ok",
+      "accuracy": 0.8438,
+      "samples": 32,
+      "avg_latency_ms": 13.85,
+      "p95_latency_ms": 24.075,
+      "details": ""
+    },
+    {
+      "model_name": "v4_char_cnn_coreml",
+      "status": "ok",
+      "accuracy": 0.9062,
+      "samples": 32,
+      "avg_latency_ms": 2.202,
+      "p95_latency_ms": 1.738,
+      "details": "pytorch-fallback"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "train": {
+    "accuracy": 1.0,
+    "samples": 144,
+    "ham_recall": 1.0,
+    "spam_recall": 1.0
+  },
+  "validation": {
+    "accuracy": 0.9333,
+    "samples": 30,
+    "ham_recall": 0.9444,
+    "spam_recall": 0.9167
+  },
+  "label_distribution": {
+    "ham": 106,
+    "spam": 68
+  }
+}

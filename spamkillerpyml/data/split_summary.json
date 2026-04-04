@@ -1,0 +1,32 @@
+{
+  "source_dataset": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/sample.csv",
+  "seed": 42,
+  "ratios": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "splits": {
+    "train": {
+      "samples": 144,
+      "label_distribution": {
+        "ham": 88,
+        "spam": 56
+      }
+    },
+    "validation": {
+      "samples": 30,
+      "label_distribution": {
+        "ham": 18,
+        "spam": 12
+      }
+    },
+    "test": {
+      "samples": 32,
+      "label_distribution": {
+        "spam": 12,
+        "ham": 20
+      }
+    }
+  }
+}

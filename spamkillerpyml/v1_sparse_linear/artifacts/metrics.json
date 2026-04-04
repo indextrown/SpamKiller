@@ -1,0 +1,16 @@
+{
+  "train": {
+    "accuracy": 1.0,
+    "samples": 144,
+    "ham_recall": 1.0,
+    "spam_recall": 1.0
+  },
+  "validation": {
+    "accuracy": 0.8333,
+    "samples": 30,
+    "ham_recall": 1.0,
+    "spam_recall": 0.5833
+  },
+  "train_samples": 144,
+  "validation_samples": 30
+}

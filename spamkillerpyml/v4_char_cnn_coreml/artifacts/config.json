@@ -1,0 +1,11 @@
+{
+  "model_type": "char_cnn_coreml",
+  "max_length": 128,
+  "vocab_size": 358,
+  "embedding_dim": 64,
+  "hidden_dim": 128,
+  "negative_label": "ham",
+  "positive_label": "spam",
+  "weights_artifact": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/v4_char_cnn_coreml/artifacts/weights.pt",
+  "mlmodel_artifact": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/v4_char_cnn_coreml/artifacts/SpamKillerCharCNN.mlpackage"
+}
