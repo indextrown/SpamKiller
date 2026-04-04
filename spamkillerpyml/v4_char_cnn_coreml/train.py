@@ -29,12 +29,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--validation-dataset", type=Path, default=DEFAULT_VALIDATION_DATASET)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=80)
     parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--embedding-dim", type=int, default=64)
     parser.add_argument("--hidden-dim", type=int, default=128)
-    parser.add_argument("--learning-rate", type=float, default=0.001)
+    parser.add_argument("--learning-rate", type=float, default=0.03)
     return parser.parse_args()
 
 

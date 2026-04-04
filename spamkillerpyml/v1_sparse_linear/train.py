@@ -29,6 +29,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--validation-dataset", type=Path, default=DEFAULT_VALIDATION_DATASET)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--epochs", type=int, default=80)
+    parser.add_argument("--learning-rate", type=float, default=0.03)
+    parser.add_argument("--l2-penalty", type=float, default=0.0001)
     return parser.parse_args()
 
 
@@ -293,7 +296,12 @@ def main() -> None:
 
     train_rows = load_dataset(dataset_path)
     validation_rows = load_dataset(validation_path) if validation_path.exists() else []
-    model = train_model(train_rows)
+    model = train_model(
+        train_rows,
+        epochs=args.epochs,
+        learning_rate=args.learning_rate,
+        l2_penalty=args.l2_penalty,
+    )
     train_metrics = evaluate(model, train_rows)
     validation_metrics = evaluate(model, validation_rows)
 
@@ -308,6 +316,11 @@ def main() -> None:
             "validation_dataset": str(validation_path),
             "labels": LABELS,
             "model_type": "linear_logistic_regression",
+            "hyperparameters": {
+                "epochs": args.epochs,
+                "learning_rate": args.learning_rate,
+                "l2_penalty": args.l2_penalty,
+            },
             "model": model.to_dict(),
         },
     )

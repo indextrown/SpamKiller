@@ -6,10 +6,10 @@
     "spam_recall": 1.0
   },
   "validation": {
-    "accuracy": 0.9333,
+    "accuracy": 0.9,
     "samples": 30,
     "ham_recall": 0.9444,
-    "spam_recall": 0.9167
+    "spam_recall": 0.8333
   },
   "label_distribution": {
     "ham": 106,

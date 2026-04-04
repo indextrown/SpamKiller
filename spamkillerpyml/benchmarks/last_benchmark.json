@@ -1,45 +1,45 @@
 {
   "dataset": "/Users/kimdonghyeon/2025/개발/앱출시/SpamKiller/SpamKiller/spamkillerpyml/data/test.csv",
-  "samples": 32,
+  "samples": 92,
   "label_distribution": {
-    "spam": 12,
-    "ham": 20
+    "spam": 42,
+    "ham": 50
   },
   "results": [
     {
       "model_name": "v0_default",
       "status": "ok",
-      "accuracy": 0.625,
-      "samples": 32,
-      "avg_latency_ms": 0.114,
-      "p95_latency_ms": 0.08,
+      "accuracy": 0.8587,
+      "samples": 92,
+      "avg_latency_ms": 0.103,
+      "p95_latency_ms": 0.11,
       "details": ""
     },
     {
       "model_name": "v1_sparse_linear",
       "status": "ok",
-      "accuracy": 0.9375,
-      "samples": 32,
-      "avg_latency_ms": 0.054,
-      "p95_latency_ms": 0.065,
+      "accuracy": 0.8261,
+      "samples": 92,
+      "avg_latency_ms": 0.059,
+      "p95_latency_ms": 0.09,
       "details": ""
     },
     {
       "model_name": "v3_embedding_coreml",
       "status": "ok",
-      "accuracy": 0.8438,
-      "samples": 32,
-      "avg_latency_ms": 13.85,
-      "p95_latency_ms": 24.075,
+      "accuracy": 0.9239,
+      "samples": 92,
+      "avg_latency_ms": 14.519,
+      "p95_latency_ms": 31.315,
       "details": ""
     },
     {
       "model_name": "v4_char_cnn_coreml",
       "status": "ok",
-      "accuracy": 0.9062,
-      "samples": 32,
-      "avg_latency_ms": 2.202,
-      "p95_latency_ms": 1.738,
+      "accuracy": 0.8478,
+      "samples": 92,
+      "avg_latency_ms": 2.071,
+      "p95_latency_ms": 3.205,
       "details": "pytorch-fallback"
     }
   ]
