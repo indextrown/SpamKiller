@@ -11,14 +11,18 @@ final class ContentViewModel: ObservableObject {
 
     // MARK: - Published State
     @Published var keywords: [String] = []
+    @Published var allowedNumbers: [String] = []
     @Published var newKeyword: String = ""
+    @Published var newAllowedNumber: String = ""
     @Published var showAddAlert: Bool = false
+    @Published var showAddAllowedNumberAlert: Bool = false
     @Published var showHelpView: Bool = false
     @Published var isOnDeviceEnabled: Bool = false
 
     // MARK: - Init
     init() {
         loadKeywords()
+        loadAllowedNumbers()
         loadOnDeviceToggle()
     }
 }
@@ -39,6 +43,24 @@ extension ContentViewModel {
     func deleteKeyword(at offsets: IndexSet) {
         SharedStore.shared.removeSpamKeywords(at: offsets)
         keywords = SharedStore.shared.loadSpamKeywords()
+    }
+}
+
+// MARK: - Allowed Numbers
+extension ContentViewModel {
+    func loadAllowedNumbers() {
+        allowedNumbers = SharedStore.shared.loadAllowedNumbers()
+    }
+
+    func addAllowedNumber() {
+        SharedStore.shared.addAllowedNumber(newAllowedNumber)
+        allowedNumbers = SharedStore.shared.loadAllowedNumbers()
+        newAllowedNumber = ""
+    }
+
+    func deleteAllowedNumber(at offsets: IndexSet) {
+        SharedStore.shared.removeAllowedNumbers(at: offsets)
+        allowedNumbers = SharedStore.shared.loadAllowedNumbers()
     }
 }
 

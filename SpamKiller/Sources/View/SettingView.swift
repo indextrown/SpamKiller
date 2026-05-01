@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     @EnvironmentObject var viewModel: ContentViewModel
+    @Environment(\.openURL) private var openURL
+    @State private var showFilteredMessagesGuide = false
     
     var body: some View {
         NavigationStack {
@@ -33,6 +35,45 @@ struct SettingView: View {
                 }
                 
                 Section {
+                    HStack(spacing: 10) {
+                        Circle()
+                            .fill(protectionStatusColor)
+                            .frame(width: 10, height: 10)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("보호 상태")
+                            
+                            Text(protectionStatusText)
+                                .font(.system(size: 11))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    
+                    Button {
+                        showFilteredMessagesGuide = true
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("필터링된 메시지 확인")
+                                
+                                Text("메시지 앱의 정크함에서 확인할 수 있습니다.")
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "message")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
+                } header: {
+                    Text("메시지")
+                        .font(.system(size: 14))
+                }
+                
+                Section {
                     HStack {
                         Text("버전")
                         
@@ -40,6 +81,20 @@ struct SettingView: View {
                         
                         Text("1.0.0")
                     }
+                    
+                    Button {
+                        openMail()
+                    } label: {
+                        HStack {
+                            Text("문의하기")
+                            
+                            Spacer()
+                            
+                            Image(systemName: "envelope")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
                 } header: {
                     Text("앱 정보")
                         .font(.system(size: 14))
@@ -47,8 +102,37 @@ struct SettingView: View {
             }
             .navigationTitle("설정")
             .navigationBarTitleDisplayMode(.inline)
+            .alert("필터링된 메시지 확인", isPresented: $showFilteredMessagesGuide) {
+                Button("확인", role: .cancel) {}
+            } message: {
+                Text("홈 화면 > 메시지 앱 > 왼쪽 상단 필터 또는 목록 > 정크함")
+            }
         }
         
+    }
+    
+    private func openMail() {
+        let subject = "SpamKiller 문의"
+        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? subject
+        guard let url = URL(string: "mailto:indextrown@gmail.com?subject=\(encodedSubject)") else { return }
+        openURL(url)
+    }
+    
+    private var protectionStatusText: String {
+        switch (viewModel.keywords.isEmpty, viewModel.isOnDeviceEnabled) {
+        case (false, true):
+            return "단어 + 로컬 AI 기반 필터링"
+        case (false, false):
+            return "단어 기반 필터링"
+        case (true, true):
+            return "로컬 AI 기반 필터링"
+        case (true, false):
+            return "필터링 설정이 필요합니다"
+        }
+    }
+    
+    private var protectionStatusColor: Color {
+        viewModel.keywords.isEmpty && !viewModel.isOnDeviceEnabled ? .orange : .green
     }
 }
 

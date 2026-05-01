@@ -54,7 +54,6 @@
 			membershipExceptions = (
 				MessageFilterExtension.swift,
 				MessageFilterExtensionSave.swift,
-				SpamKitMLV1.mlpackage,
 			);
 			target = DF4198BB2EF87CB000469A19 /* SpamKillerTests */;
 		};

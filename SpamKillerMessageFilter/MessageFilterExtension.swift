@@ -126,6 +126,13 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling, ILMessageFilterC
     ///   - ILMessageFilterSubAction: 세부 분류 (필요 없으면 .none)
     private func offlineAction(for queryRequest: ILMessageFilterQueryRequest) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
         let message = queryRequest.messageBody ?? ""
+        let sender = queryRequest.sender ?? ""
+
+        // MARK: - 0. 허용 번호
+        let allowedNumbers = SharedStore.shared.loadAllowedNumbers()
+        if checkByAllowedSender(sender: sender, allowedNumbers: allowedNumbers).0 == .allow {
+            return (.allow, .none)
+        }
         
         // MARK: - 1. 공통 정책
         if let policyResult = applyPolicy(message: message) {
@@ -215,6 +222,14 @@ extension MessageFilterExtension {
         let isSpam = keywords.contains { message.contains($0) }
         return isSpam ? (.junk, .none) : (.allow, .none)
     }
+
+    func checkByAllowedSender(sender: String, allowedNumbers: [String]) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
+        let normalizedSender = normalizePhoneNumber(sender)
+        guard !normalizedSender.isEmpty else { return (.none, .none) }
+
+        let isAllowed = allowedNumbers.contains(normalizedSender)
+        return isAllowed ? (.allow, .none) : (.none, .none)
+    }
     
     func checkByML(message: String) -> (ILMessageFilterAction, ILMessageFilterSubAction) {
         // 모델이 없으면 ML 판단은 하지 않음
@@ -236,5 +251,9 @@ extension MessageFilterExtension {
             // 에러 시에도 판단 보류
             return (.none, .none)
         }
+    }
+
+    private func normalizePhoneNumber(_ value: String) -> String {
+        value.filter(\.isNumber)
     }
 }

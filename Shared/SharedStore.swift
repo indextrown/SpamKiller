@@ -39,6 +39,13 @@ final class SharedStore {
     private let defaults: UserDefaults
 }
 
+// MARK: - Common Helpers
+private extension SharedStore {
+    func normalizePhoneNumber(_ value: String) -> String {
+        value.filter(\.isNumber)
+    }
+}
+
 // MARK: - Spam Keywords
 extension SharedStore {
     /// App Group에 저장된 스팸 키워드 목록을 읽어온다
@@ -69,6 +76,30 @@ extension SharedStore {
         var list = loadSpamKeywords()
         list.remove(atOffsets: offsets)
         defaults.set(list, forKey: AppGroup.Key.spamKeywordKey)
+    }
+}
+
+// MARK: - Allowed Numbers
+extension SharedStore {
+    func loadAllowedNumbers() -> [String] {
+        defaults.stringArray(forKey: AppGroup.Key.allowedNumberKey) ?? []
+    }
+
+    func addAllowedNumber(_ number: String) {
+        let normalized = normalizePhoneNumber(number)
+        guard !normalized.isEmpty else { return }
+
+        var list = loadAllowedNumbers()
+        guard !list.contains(normalized) else { return }
+
+        list.append(normalized)
+        defaults.set(list, forKey: AppGroup.Key.allowedNumberKey)
+    }
+
+    func removeAllowedNumbers(at offsets: IndexSet) {
+        var list = loadAllowedNumbers()
+        list.remove(atOffsets: offsets)
+        defaults.set(list, forKey: AppGroup.Key.allowedNumberKey)
     }
 }
 

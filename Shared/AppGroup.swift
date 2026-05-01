@@ -12,6 +12,7 @@ enum AppGroup {
     
     enum Key {
         static let spamKeywordKey = "spam_keywords"
+        static let allowedNumberKey = "allowed_numbers"
         static let onDeviceEnavledKey = "on_device_enabled"
     }
 }
