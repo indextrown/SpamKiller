@@ -103,3 +103,8 @@ struct HelpViewLegacy: View {
         }
     }
 }
+
+@available(iOS 26, *)
+#Preview {
+    HelpViewLegacy()
+}

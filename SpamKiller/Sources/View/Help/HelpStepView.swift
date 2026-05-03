@@ -33,3 +33,24 @@ struct HelpStepView: View {
         }
     }
 }
+
+struct HelpStepTitleOnlyView: View {
+    let number: String
+    let title: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Text(number)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 28, height: 28)
+                .background(Color(.systemGray3))
+                .clipShape(Circle())
+
+            Text(title)
+                .font(.system(size: 16, weight: .semibold))
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 3)
+        }
+    }
+}
